@@ -72,7 +72,6 @@ public class FlagStormDbContext : DbContext
 
    protected override void OnModelCreating(ModelBuilder modelBuilder)
 {
-    base.OnModelCreating(modelBuilder);
 
     modelBuilder.Entity<FlagStormFeatureEntity>()
         .HasOne(f => f.RuntimeConfig)
@@ -88,27 +87,28 @@ public class FlagStormDbContext : DbContext
         .IsRequired()
         .OnDelete(DeleteBehavior.Cascade);
 
-    modelBuilder.Entity<FlagStormTargetRuleDto>()
+    modelBuilder.Entity<FlagStormTargetRuleEntity>()
         .HasOne(f => f.AppVersionRange)
         .WithOne()
         .HasForeignKey<AppVersionRangeEntity>("FlagStormTargetRuleId") // shadow FK
         .IsRequired(false)
         .OnDelete(DeleteBehavior.Cascade);
 
-    modelBuilder.Entity<FlagStormTargetRuleDto>()
+    modelBuilder.Entity<FlagStormTargetRuleEntity>()
        .HasMany(f => f.Browsers);
-    modelBuilder.Entity<FlagStormTargetRuleDto>()
+    modelBuilder.Entity<FlagStormTargetRuleEntity>()
        .HasMany(f => f.Regions);
     
-    modelBuilder.Entity<FlagStormTargetRuleDto>()
+    modelBuilder.Entity<FlagStormTargetRuleEntity>()
        .HasMany(f => f.Locales);
-    modelBuilder.Entity<FlagStormTargetRuleDto>()
+    modelBuilder.Entity<FlagStormTargetRuleEntity>()
        .HasMany(f => f.DeviceTypes);
-    modelBuilder.Entity<FlagStormTargetRuleDto>()
+    modelBuilder.Entity<FlagStormTargetRuleEntity>()
        .HasMany(f => f.OperatingSystems);
-    modelBuilder.Entity<FlagStormTargetRuleDto>()
+    modelBuilder.Entity<FlagStormTargetRuleEntity>()
        .HasMany(f => f.Environments);
-    modelBuilder.Entity<FlagStormTargetRuleDto>()
+    modelBuilder.Entity<FlagStormTargetRuleEntity>()
        .HasMany(f => f.AccountIds);
-}
+    base.OnModelCreating(modelBuilder);
+   }
 }

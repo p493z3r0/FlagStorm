@@ -5,9 +5,9 @@ namespace FlagStorm.Data.Feature;
 
 public class BaseDto
 {
-    public required string Id { get; set; }
-    public required DateTimeOffset CreatedAt { get; set; }
-    public required DateTimeOffset? UpdatedAt { get; set; }
+    public string? Id { get; set; }
+    public DateTimeOffset? CreatedAt { get; set; }
+    public DateTimeOffset? UpdatedAt { get; set; }
 }
 
 public class FlagStormFeatureDto : BaseDto

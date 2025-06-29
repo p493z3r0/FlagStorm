@@ -1,6 +1,7 @@
 ﻿using FlagStorm.Data.Feature;
 using FlagStorm.Data.Interfaces.Service;
 using FlagStorm.Data.Persistence;
+using FlagStorm.Data.Persistence.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace FlagStorm.Data.Services;
@@ -19,6 +20,16 @@ public class FeatureService(FlagStormDbContext db) : IFeatureService
 
     public async Task<FlagStormFeatureDto?> CreateFeature(FlagStormFeatureDto flagStormFeature)
     {
+        var feature = new FlagStormFeatureEntity
+        {
+            Name = flagStormFeature.Name,
+            RuntimeConfig = new FlagStormFeatureRuntimeConfigEntity
+            {
+                Id = string.Empty
+            },
+            Id = string.Empty
+        };
+        await db.Features.AddAsync(feature);
         await db.SaveChangesAsync();
         return flagStormFeature;
     }

@@ -1,22 +1,22 @@
 ﻿using FlagStorm.Data.Data;
 using FlagStorm.Data.Feature;
 
-public class RegionDto 
+public class RegionDto : BaseDto
 {
     public string Value { get; set; } = null!;
 }
 
-public class BrowserDto 
+public class BrowserDto : BaseDto
 {
     public string Value { get; set; } = null!;
 }
 
-public class LocaleDto 
+public class LocaleDto : BaseDto
 {
     public string Value { get; set; } = null!;
 }
 
-public class AppVersionDto : IComparable<AppVersionDto>
+public class AppVersionDto : BaseDto, IComparable<AppVersionDto>
 {
     public string Value { get; set; } = null!;
 

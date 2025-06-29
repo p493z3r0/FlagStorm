@@ -23,7 +23,7 @@ public class FlagStormFeatureEntity : BaseEntity
     /// <summary>
     /// Optional tag(s) for grouping features.
     /// </summary>
-    public IReadOnlySet<string> Tags { get; init; } = new HashSet<string>();
+    public List<string> Tags { get; init; } = new List<string>();
 
     /// <summary>
     /// Runtime evaluation config: who gets the feature.
@@ -61,7 +61,7 @@ public class FlagStormFeatureEntity : BaseEntity
             Name = Name,
             IsDisabled = IsDisabled,
             Description = Description,
-            Tags = Tags,
+            Tags = Tags.ToHashSet(),
             Version = Version,
             RuntimeConfig = RuntimeConfig.ToDto(),
         };
@@ -96,13 +96,13 @@ public class FlagStormFeatureRuntimeConfigEntity : BaseEntity
 
 public class FlagStormTargetRuleEntity : BaseEntity
 {
-    public virtual ICollection<BrowserDto> Browsers { get; init; } = new List<BrowserDto>();
-    public virtual ICollection<RegionDto> Regions { get; init; } = new List<RegionDto>();
-    public virtual ICollection<LocaleDto> Locales { get; init; } = new List<LocaleDto>();
-    public virtual ICollection<DeviceTypeDto> DeviceTypes { get; init; } = new List<DeviceTypeDto>();
-    public virtual ICollection<OperatingSystemDto> OperatingSystems { get; init; } = new List<OperatingSystemDto>();
-    public virtual ICollection<EnvironmentNameDto> Environments { get; init; } = new List<EnvironmentNameDto>();
-    public virtual ICollection<AccountIdDto> AccountIds { get; init; } = new List<AccountIdDto>();
+    public virtual ICollection<BrowserEntity> Browsers { get; init; } = new List<BrowserEntity>();
+    public virtual ICollection<RegionEntity> Regions { get; init; } = new List<RegionEntity>();
+    public virtual ICollection<LocaleEntity> Locales { get; init; } = new List<LocaleEntity>();
+    public virtual ICollection<DeviceTypeEntity> DeviceTypes { get; init; } = new List<DeviceTypeEntity>();
+    public virtual ICollection<OperatingSystemEntity> OperatingSystems { get; init; } = new List<OperatingSystemEntity>();
+    public virtual ICollection<EnvironmentNameEntity> Environments { get; init; } = new List<EnvironmentNameEntity>();
+    public virtual ICollection<AccountIdEntity> AccountIds { get; init; } = new List<AccountIdEntity>();
 
     public virtual AppVersionRangeEntity? AppVersionRange { get; init; }
 
@@ -118,27 +118,31 @@ public class FlagStormTargetRuleEntity : BaseEntity
             Id = Id,
             UpdatedAt = UpdatedAt,
             CreatedAt = CreatedAt,
-            Browsers = Browsers.ToList(),
-            Regions = Regions.ToList(),
-            AppVersionRange = AppVersionRange?.ToDto()
+            Browsers = Browsers.ToList().Select(b => b.ToDto()).ToList(),
+            Regions = Regions.ToList().Select(r => r.ToDto()).ToList(),
+            AppVersionRange = AppVersionRange?.ToDto(),
+            IsAllowRule = IsAllowRule,
+            OperatingSystems = OperatingSystems.ToList().Select(o => o.ToDto()).ToList(),
+            Environments = Environments.ToList().Select(e => e.ToDto()).ToList(),
+            AccountIds = AccountIds.ToList().Select(a => a.ToDto()).ToList(),
         };
     }
 }
 
 public class AppVersionRangeEntity : BaseEntity
 {
-    public virtual required AppVersionDto Min { get; init; }
-    public virtual required AppVersionDto Max { get; init; }
+    public virtual required AppVersionEntity Min { get; init; }
+    public virtual required AppVersionEntity Max { get; init; }
 
-    public bool Contains(AppVersionDto version) =>
+    public bool Contains(AppVersionEntity version) =>
         version >= Min && version <= Max;
 
     public AppVersionRangeDto ToDto()
     {
         return new AppVersionRangeDto()
         {
-            Min = Min,
-            Max = Max
+            Min = Min.ToDto(),
+            Max = Max.ToDto()
         };
     }
 }
