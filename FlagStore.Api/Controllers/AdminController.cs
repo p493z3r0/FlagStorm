@@ -10,7 +10,7 @@ namespace FlagStore.Api.Controllers;
 public class AdminController(IFeatureService featureService) : ControllerBase
 {
     [HttpPost]
-    public async Task<IActionResult> CreateFeature(FlagStormFeature flagStormFeature)
+    public async Task<IActionResult> CreateFeature(FlagStormFeatureDto flagStormFeature)
     {
         return Ok(await featureService.CreateFeature(flagStormFeature));
     }

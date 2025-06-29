@@ -19,7 +19,6 @@ public class FeatureService(FlagStormDbContext db) : IFeatureService
 
     public async Task<FlagStormFeatureDto?> CreateFeature(FlagStormFeatureDto flagStormFeature)
     {
-        await db.Features.AddAsync(flagStormFeature);
         await db.SaveChangesAsync();
         return flagStormFeature;
     }
